@@ -21,15 +21,15 @@ export default async function handler(
   await cors( req, res )
   const { epno } = req.query
   if ( req.method === "GET" ) {
-    const url=`${env.EPISODES_EP as string}/episode/${epno}`
+    const url=`${env.EPISODES_EP as string}/${epno}`
       axios.get( url ).then( ( response: AxiosResponse<Episode> ) => {
         // console.log(response)
       res.status( response.status );
       res.json( {
         id: response.data.id,
         name: response.data.name,
-        air_date: response.data.name,
-        episode: response.data.name,
+        air_date: response.data.air_date,
+        episode: response.data.episode,
         characters: response.data.characters,
         url: response.data.url,
         created: response.data.created,

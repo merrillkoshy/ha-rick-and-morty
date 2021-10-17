@@ -1,14 +1,16 @@
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import { Characters, CharEndpoint } from '../lib/dataTypes'
 import getters from '../lib/getData'
-import styles from '../styles/Home.module.css'
 import { character_endpoint_skeleton, character_skeleton } from '../lib/data-skeleton'
 import MastHead from '../components/MastHead'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ContentModal from '../components/ContentModal'
+import PaginationComponent from "../components/Pagination";
+import { Card, Spinner } from "react-bootstrap";
+import Image from "next/image";
 
 const Home: NextPage = () => {
 
@@ -27,7 +29,6 @@ const Home: NextPage = () => {
   }
   useEffect( () => {
     get();
-    console.log(characters)
     return () => {
       setVisible( false );
       setModalContent(character_skeleton)
@@ -35,38 +36,56 @@ const Home: NextPage = () => {
   }, [pageNumber])
   
   
+  
 
   return (
-    <div className={styles.container}>
+    <div className={"app-container"}>
       <Header/>
       <main className="content-container px-2 ">
         <MastHead/>
 
         <div className="d-flex flex-row flex-wrap content-area justify-content-center align-items-center">
-          { characters && characters.results?.map( ( character: Characters ) => { 
+        { characters.results.length === 0 ? <Spinner animation="border" variant="primary" />: 
+           characters && characters.results?.map( ( character: Characters ) => { 
             return (
-              <div
-                key={ character?.id }
+              <Card key={ character?.id }
                 className="character-card"
-                onClick={ e => {
+                onClick={ (e:React.MouseEvent<HTMLInputElement> ) => {
                   e.preventDefault();
-                  setVisible( true );
+                  handleOpen();
                   setModalContent(character)
                 }}
               >
-                <img src={character?.image } />
-                <h2>{ character?.name }</h2>
-                <span className="d-flex align-items-center"><span className={ `status status-${character?.status.toLowerCase()}`}></span>{ `${character?.species}-${character?.status}`}</span>
-                <h3>Origin</h3>
-                <p>{ character.origin?.name }</p>
-                <h3>Location</h3>
-                <p>{ character.location?.name }</p>
+                <Card.Body>
+                  
+                    <Image
+                    src={character?.image}
+                    height={300}
+                    width={ 300 }
+                    blurDataURL="/placeholder.jpeg"
+                    alt={`${character?.image} image for HA`}                   
+                    />
+                    
+                  <div className="info-box d-flex mt-3 flex-column">
+                    <h2>{ character?.name }</h2>
+                    <span className="d-flex align-items-center"><span className={ `status status-${character?.status.toLowerCase()}`}></span>{ `${character?.species}-${character?.status}`}</span>
+                    <h3>Origin</h3>
+                    <p>{ character.origin?.name }</p>
+                    <h3>Location</h3>
+                    <p>{ character.location?.name }</p>
+                    
+                    </div>
+
+                </Card.Body>
+                <Card.Footer>
                 <a className='more' onClick={ (e) => { 
-                  e.preventDefault();
-                  setVisible( true );
-                  setModalContent(character)
-                }}>More &rarr;</a>
-          </div>
+                      e.preventDefault();
+                      handleOpen();
+                      setModalContent(character)
+                    }}>More &rarr;</a>
+                </Card.Footer>
+              </Card>
+              
             )
           })}
         </div>
@@ -77,14 +96,15 @@ const Home: NextPage = () => {
         />
       </main>
 
-      <Footer
+      <PaginationComponent
         count={ characters.info?.count }
         pages={characters.info?.pages}
         next={characters.info?.next}
         prev={ characters.info?.prev }
         setPageNumber={ setPageNumber }
         get={get}
-    />
+      />
+      <Footer />
     </div>
   )
 }

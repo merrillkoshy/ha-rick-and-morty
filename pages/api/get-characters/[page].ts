@@ -22,7 +22,6 @@ export default async function handler(
   const { page } = req.query
   if ( req.method === "GET" ) {
     const url=`${env.CHARACTERS_EP as string}?page=${page}`
-      console.log( url );
       axios.get( url ).then( ( response: AxiosResponse<CharEndpoint> ) => {
         // console.log(response)
       res.status( response.status );

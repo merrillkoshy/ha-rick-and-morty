@@ -3,7 +3,7 @@ import { Characters, Episode } from "../lib/dataTypes";
 import Image from "next/image";
 import moment from "moment";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EpisodeModal from "./EpisodeModal";
 import getters from "../lib/getData";
 import { episode_skeleton } from "../lib/data-skeleton";
@@ -16,6 +16,7 @@ const ContentModal = (props: Props) => {
 	const { visible, modalContent, handleClose } = props;
 	const [show, setShow] = useState(false);
 	const [episode, setEpisode] = useState<Episode>(episode_skeleton);
+	const [episodeNumber, setEpisodeNumber] = useState<number>(0);
 
 	const handleOpen_episode_modal = () => {
 		setShow(true);
@@ -24,22 +25,42 @@ const ContentModal = (props: Props) => {
 		setShow(false);
 	};
 
+	useEffect(() => {
+		return () => {
+			setEpisode(episode_skeleton);
+			setEpisodeNumber(0);
+			setShow(false);
+		};
+	}, [episodeNumber]);
 	const fetchEpisode = (number: number) => {
-		getters.getEpisode(number).then((response) => {
-			setEpisode(response);
-		});
+		getters
+			.getEpisode(number)
+			.then((response) => {
+				setEpisode(response);
+			})
+			.catch((e) => {
+				console.log(e);
+			});
+	};
+	const episode_number_filtered_from_text = (text: string) => {
+		return Number(text.split("https://rickandmortyapi.com/api/episode/")[1]);
 	};
 	return (
 		<Modal show={visible} size="lg" onHide={handleClose}>
 			<Modal.Header closeButton>
 				<Modal.Title>
-					<h1>{modalContent?.name}</h1>
+					<h1>
+						#{modalContent?.id}: {modalContent?.name}
+					</h1>
+					<span className="float-right episode-created-at">
+						Created on {moment(modalContent.created).format("lll")}{" "}
+					</span>
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				<div className="d-flex container flex-column">
-					<div className="d-flex justify-content-center align-items-center flex-lg-row flex-xl-row flex-xxl-row">
-						<div className="container">
+					<div className="d-flex justify-content-center align-items-center flex-lg-row flex-xl-row flex-xxl-row flex-column">
+						<div className="container col">
 							<Image
 								src={modalContent?.image}
 								height={742}
@@ -53,31 +74,57 @@ const ContentModal = (props: Props) => {
 								<h2 className="text-center">{`${modalContent?.species} - ${modalContent?.status}`}</h2>
 							</div>
 						</div>
-						<div className="px-5">
-							<h3>Origin</h3>
-							<p>{modalContent.origin?.name}</p>
-							<h3>Location</h3>
-							<p>{modalContent.location?.name}</p>
-							<h3>Type</h3>
-							<p>{modalContent.type}</p>
-							<h3>Gender</h3>
-							<p>{modalContent.gender}</p>
+						<div className="d-flex flex-column px-5 col">
+							<div className="d-flex align-items-baseline">
+								<h4>
+									<strong>Origin</strong>
+								</h4>
+								{":"}
+								<h5>&nbsp;&nbsp;{modalContent.origin?.name}</h5>
+							</div>
+							<div className="d-flex align-items-baseline">
+								<h4>
+									<strong>Location</strong>
+								</h4>
+								{":"}
+								<h5>&nbsp;&nbsp;{modalContent.location?.name}</h5>
+							</div>
+							<div className="d-flex align-items-baseline">
+								<h4>
+									<strong>Type</strong>
+								</h4>
+								{":"}
+								<h5>
+									&nbsp;&nbsp;
+									{modalContent.type ? modalContent.type : "unknown"}
+								</h5>
+							</div>
+							<div className="d-flex align-items-baseline">
+								<h4>
+									<strong>Gender</strong>
+								</h4>
+								{":"}
+								<h5>
+									&nbsp;&nbsp;
+									{modalContent.gender ? modalContent.gender : "unknown"}
+								</h5>
+							</div>
+							<h4>
+								<strong>Episodes</strong>
+							</h4>
 							<div className="episode-list d-flex flex-wrap">
 								{modalContent.episode &&
 									modalContent.episode.map((ep) => {
 										return (
 											<Button
-												className="primary-outline m-2"
+												key={ep}
+												variant="outline-primary"
+												className="m-2"
 												onClick={(e) => {
 													e.preventDefault();
 													setShow(true);
-													fetchEpisode(
-														Number(
-															ep.split(
-																"https://rickandmortyapi.com/api/episode/"
-															)[1]
-														)
-													);
+													const number = episode_number_filtered_from_text(ep);
+													fetchEpisode(number);
 												}}
 											>
 												{ep.replace(
@@ -89,7 +136,6 @@ const ContentModal = (props: Props) => {
 									})}
 							</div>
 						</div>
-						<span>Created at {moment(modalContent.created).format("L")} </span>
 					</div>
 				</div>
 			</Modal.Body>
@@ -107,13 +153,12 @@ const ContentModal = (props: Props) => {
 					Close
 				</Button>
 			</Modal.Footer>
-			{episode.id === 0 && (
-				<EpisodeModal
-					show={show}
-					episodeContent={episode}
-					handleClose={handleClose_episode_modal}
-				/>
-			)}
+
+			<EpisodeModal
+				show={show}
+				episodeContent={episode}
+				handleClose={handleClose_episode_modal}
+			/>
 		</Modal>
 	);
 };

@@ -1,0 +1,14 @@
+.btn-outline-primary {
+	color: $black-color;
+	&:hover {
+		color: $white-color;
+	}
+}
+.pagination {
+	.page-link {
+		font-size: 1rem;
+	}
+	.sr-only {
+		display: none;
+	}
+}
