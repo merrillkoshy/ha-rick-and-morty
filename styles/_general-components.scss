@@ -5,9 +5,26 @@
 	}
 }
 .pagination {
-	.page-link {
-		font-size: 1rem;
+	.page-item {
+		.page-link {
+			margin: 0.2rem;
+			padding: 0.2rem;
+			min-width: 2rem;
+			font-size: 0.8125rem;
+			color: rgba(0, 0, 0, 0.87);
+			background-color: $white-color;
+			border-radius: 4px;
+			border: 1px solid rgba(0, 0, 0, 0.23);
+		}
+		&.active {
+			.page-link {
+				background-color: $secondary;
+				border-color: $secondary;
+				color: $white-color;
+			}
+		}
 	}
+
 	.sr-only {
 		display: none;
 	}

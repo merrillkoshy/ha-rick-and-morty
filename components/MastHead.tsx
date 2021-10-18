@@ -1,6 +1,6 @@
 const MastHead = () => {
 	return (
-		<div className="d-flex my-3 align-items-center justify-content-center">
+		<div className="mast-container d-flex mt-5 pt-2 mb-3 align-items-center justify-content-center">
 			<svg
 				className="m-3 d-flex "
 				width="60"

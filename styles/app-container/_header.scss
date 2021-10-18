@@ -1,18 +1,21 @@
-.masthead {
-	margin: 0;
-	line-height: 1.15;
-	font-size: 4rem;
-	@include media-breakpoint-down(sm) {
-		font-size: 2rem;
-	}
-	@include media-breakpoint-down(md) {
-		font-size: 2rem;
-	}
-	a {
-		color: $primary;
-		&:hover,
-		:focus {
-			text-decoration: underline;
+.mast-container {
+	position: sticky;
+	.masthead {
+		margin: 0;
+		line-height: 1.15;
+		font-size: 4rem;
+		@include media-breakpoint-down(sm) {
+			font-size: 2rem;
+		}
+		@include media-breakpoint-down(md) {
+			font-size: 2rem;
+		}
+		a {
+			color: $primary;
+			&:hover,
+			:focus {
+				text-decoration: underline;
+			}
 		}
 	}
 }

@@ -1,4 +1,5 @@
-.episode-modal {
+.episode-modal,
+.location-modal {
 	background: #00000024;
 	backdrop-filter: blur(2px);
 }
@@ -48,5 +49,11 @@
 		max-height: 10vh;
 		max-width: 17vw;
 		overflow: scroll;
+		@include media-breakpoint-down(sm) {
+			max-width: 90vw;
+		}
+		@include media-breakpoint-down(md) {
+			max-width: 90vw;
+		}
 	}
 }

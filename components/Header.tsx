@@ -4,6 +4,9 @@ const Header = () => {
 	return (
 		<>
 			<Head>
+				<meta charSet="utf-8" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<meta name="theme-color" content="#fa7009" />
 				<title>Rick & Morty x HA</title>
 				<meta
 					name="description"

@@ -23,7 +23,6 @@ export default async function handler(
   if ( req.method === "GET" ) {
     const url=`${env.EPISODES_EP as string}/${epno}`
       axios.get( url ).then( ( response: AxiosResponse<Episode> ) => {
-        // console.log(response)
       res.status( response.status );
       res.json( {
         id: response.data.id,
@@ -35,7 +34,6 @@ export default async function handler(
         created: response.data.created,
       } )
       } ).catch( e => {
-        console.log( e );
         res.status( 500 ).end()
       } )
   } else {

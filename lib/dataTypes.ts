@@ -29,9 +29,9 @@ export type Info = {
 	next: string;
 	prev: string;
 };
-export type CharEndpoint = {
+export type EndPoint = {
 	info: Info;
-	results: Array<Characters>;
+	results: Array<Characters> | Array<Location>;
 };
 
 export type Episode = {
@@ -40,6 +40,15 @@ export type Episode = {
 	air_date: string;
 	episode: string;
 	characters: Array<string>;
+	url: string;
+	created: string;
+};
+export type Location = {
+	id: number;
+	name: string;
+	type: string;
+	dimension: string;
+	residents: Array<string>;
 	url: string;
 	created: string;
 };

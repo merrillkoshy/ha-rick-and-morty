@@ -1,6 +1,13 @@
 import Image from "next/image";
-import React, { useState } from "react";
-import { Card, OverlayTrigger, Pagination, Popover } from "react-bootstrap";
+import React, { useRef, useState } from "react";
+import {
+	Button,
+	Card,
+	OverlayTrigger,
+	Pagination,
+	Popover,
+	Spinner,
+} from "react-bootstrap";
 import { Info } from "../lib/dataTypes";
 
 const PaginationComponent = ({
@@ -16,10 +23,9 @@ const PaginationComponent = ({
 	next: Info["next"];
 	prev: Info["prev"];
 	setPageNumber: React.Dispatch<React.SetStateAction<number>>;
-	get: () => void;
+	get: (page: number) => void;
 }) => {
 	const [active, setActive] = useState(1);
-
 	let items = [];
 	let totalItems = [];
 	for (let number = 1; number <= pages; number++) {
@@ -30,7 +36,7 @@ const PaginationComponent = ({
 					e.preventDefault();
 					setActive(number);
 					setPageNumber(number);
-					get();
+					get(number);
 				}}
 				key={number}
 				active={number === active}
@@ -43,15 +49,8 @@ const PaginationComponent = ({
 	const finalBlock = Math.round(pages / 1.05);
 	items.push(
 		<>
-			<Pagination.First
-				onClick={(e) => {
-					e.preventDefault();
-					setActive(1);
-					setPageNumber(1);
-					get();
-				}}
-			/>
 			<Pagination.Prev
+				key={`prev-${active}`}
 				onClick={(e) => {
 					e.preventDefault();
 					setActive((prev: number) => {
@@ -62,7 +61,8 @@ const PaginationComponent = ({
 						if (prev - 1 !== 1) return prev - 1;
 						return 1;
 					});
-					get();
+					if (active - 1 !== 1) return get(active - 1);
+					return get(1);
 				}}
 			/>
 		</>
@@ -75,7 +75,7 @@ const PaginationComponent = ({
 					e.preventDefault();
 					setActive(number);
 					setPageNumber(number);
-					get();
+					get(number);
 				}}
 				key={number}
 				active={number === active}
@@ -84,13 +84,12 @@ const PaginationComponent = ({
 			</Pagination.Item>
 		);
 	}
+	const ref = useRef(null);
 	items.push(
 		<OverlayTrigger
 			trigger="click"
 			key={"top"}
 			placement={"top"}
-			rootClose={true}
-			rootCloseEvent="click"
 			overlay={
 				<Popover id={"pagination-all-elements"}>
 					<Card>
@@ -100,14 +99,18 @@ const PaginationComponent = ({
 								size="sm"
 								className="flex-wrap pagination pagination-sm py-3 m-0"
 							>
-								{totalItems}
+								{totalItems.length ? (
+									totalItems
+								) : (
+									<Spinner animation="border" variant="primary" />
+								)}
 							</Pagination>
 						</Card.Body>
 					</Card>
 				</Popover>
 			}
 		>
-			<Pagination.Ellipsis activeLabel="" />
+			<Pagination.Ellipsis key={`ellipsis-${active}`} activeLabel="" />
 		</OverlayTrigger>
 	);
 	for (let number = finalBlock; number <= pages; number++) {
@@ -118,7 +121,7 @@ const PaginationComponent = ({
 					e.preventDefault();
 					setActive(number);
 					setPageNumber(number);
-					get();
+					get(number);
 				}}
 				key={number}
 				active={number === active}
@@ -130,6 +133,7 @@ const PaginationComponent = ({
 	items.push(
 		<>
 			<Pagination.Next
+				key={`next-${active}`}
 				onClick={(e) => {
 					e.preventDefault();
 					setActive((prev: number) => {
@@ -140,22 +144,15 @@ const PaginationComponent = ({
 						if (prev + 1 !== pages) return prev + 1;
 						return pages;
 					});
-					get();
-				}}
-			/>
-			<Pagination.Last
-				onClick={(e) => {
-					e.preventDefault();
-					setActive(pages);
-					setPageNumber(pages);
-					get();
+					if (active + 1 !== pages) return get(active + 1);
+					return get(pages);
 				}}
 			/>
 		</>
 	);
 	return (
-		<Pagination size="sm" className="flex-wrap py-3 m-0">
-			{items}
+		<Pagination size="sm" className="flex-wrap py-3 mb-5">
+			{items.length ? items : <Spinner animation="border" variant="primary" />}
 		</Pagination>
 	);
 };

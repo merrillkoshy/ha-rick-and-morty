@@ -11,8 +11,6 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: 100%;
-		height: 100%;
 		background: $white-color;
 		z-index: -1;
 		border: 1px solid $black-color;
@@ -25,8 +23,6 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: 100%;
-		height: 100%;
 		z-index: -1;
 		opacity: 0;
 		visibility: hidden;
@@ -72,7 +68,7 @@
 		}
 	}
 	.card-footer {
-		background-color: $white-color;
+		background-color: transparent;
 	}
 	&:hover,
 	&:focus {

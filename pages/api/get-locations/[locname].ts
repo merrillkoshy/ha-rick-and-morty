@@ -4,7 +4,7 @@ import Cors from "cors";
 import initMiddleware from "../../../lib/init-middleware";
 import { env } from "process";
 import axios, { AxiosResponse } from 'axios';
-import { EndPoint } from '../../../lib/dataTypes';
+import { EndPoint, Episode, Location } from '../../../lib/dataTypes';
 
 
 const cors = initMiddleware(
@@ -19,9 +19,9 @@ export default async function handler(
   res: NextApiResponse<EndPoint>
 ) {
   await cors( req, res )
-  const { page } = req.query
+  const { locname } = req.query
   if ( req.method === "GET" ) {
-    const url=`${env.CHARACTERS_EP as string}?page=${page}`
+    const url = `${ env.LOCATIONS_EP as string }/?name=${ encodeURI( locname as string)}`
       axios.get( url ).then( ( response: AxiosResponse<EndPoint> ) => {
       res.status( response.status );
       res.json( {
@@ -33,7 +33,9 @@ export default async function handler(
         },
         results: response.data.results
       } )
-    }).catch(e=>res.status( 500 ).end())
+      } ).catch( e => {
+        res.status( 500 ).end()
+      } )
   } else {
     res.status( 500 ).end();
   }

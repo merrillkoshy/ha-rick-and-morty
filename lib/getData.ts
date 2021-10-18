@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { Routes, Characters, CharEndpoint, Episode } from "./dataTypes";
+import { Routes, Characters, EndPoint, Episode, Location } from "./dataTypes";
 
 const getRoutes = async (): Promise<Routes> => {
 	let routes: Routes;
@@ -33,15 +33,15 @@ const getCharacters = async (): Promise<Characters> => {
 	return await characters;
 };
 
-const getCharacterEndpoint = async (page: number): Promise<CharEndpoint> => {
-	let characters: CharEndpoint;
+const getCharacterEndpoint = async (page: number): Promise<EndPoint> => {
+	let characters: EndPoint;
 	const headers = {
 		"Access-Control-Allow-Origin": "*",
 		"Content-Type": "application/json",
 	};
 	characters = await axios
 		.get(`/api/get-characters/${page}`, { headers: headers })
-		.then((res: AxiosResponse<CharEndpoint>) => {
+		.then((res: AxiosResponse<EndPoint>) => {
 			const response = res.data;
 			return response;
 		})
@@ -68,5 +68,28 @@ const getEpisode = async (epno: number): Promise<Episode> => {
 		});
 	return await episode;
 };
+const getLocation = async (locname: string): Promise<Location> => {
+	let location: Location;
+	const headers = {
+		"Access-Control-Allow-Origin": "*",
+		"Content-Type": "application/json",
+	};
+	location = await axios
+		.get(`/api/get-locations/${locname}`, { headers: headers })
+		.then((res: AxiosResponse<EndPoint>) => {
+			const response = res.data;
+			return response.results[0] as Location;
+		})
+		.catch((e) => {
+			return e;
+		});
+	return await location;
+};
 
-export default { getRoutes, getCharacters, getCharacterEndpoint, getEpisode };
+export default {
+	getRoutes,
+	getCharacters,
+	getCharacterEndpoint,
+	getEpisode,
+	getLocation,
+};

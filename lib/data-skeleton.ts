@@ -36,3 +36,12 @@ export const episode_skeleton = {
 	url: "",
 	created: "",
 };
+export const location_skeleton = {
+	id: 0,
+	name: "",
+	type: "",
+	dimension: "",
+	residents: [],
+	url: "",
+	created: "",
+};

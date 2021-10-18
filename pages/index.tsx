@@ -1,7 +1,8 @@
-import React, { MouseEventHandler } from "react";
+import React from "react";
+import { ToastContainer } from "react-toastify";
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
-import { Characters, CharEndpoint } from '../lib/dataTypes'
+import { Characters, EndPoint } from '../lib/dataTypes'
 import getters from '../lib/getData'
 import { character_endpoint_skeleton, character_skeleton } from '../lib/data-skeleton'
 import MastHead from '../components/MastHead'
@@ -14,31 +15,31 @@ import Image from "next/image";
 
 const Home: NextPage = () => {
 
-  const [ characters, setCharacters ] = useState<CharEndpoint>( character_endpoint_skeleton );
-  const [ pageNumber, setPageNumber ] = useState<number>( 1 );
+  const [ characters, setCharacters ] = useState<EndPoint>( character_endpoint_skeleton );
+  const [ pageNumber, setPageNumber ] = useState<number>( 0 );
   const [ visible, setVisible ] = useState<boolean>( false );
   const [ modalContent, setModalContent ] = useState<Characters>( character_skeleton )
-  
+
   const handleOpen=()=>{setVisible(true)};
   const handleClose = () => { setVisible( false ) };
   
-  const get = () => {
-    getters.getCharacterEndpoint(pageNumber ).then( res => { 
+  const get = (page:number) => {
+    getters.getCharacterEndpoint( page ).then( res => { 
       setCharacters(res)
     })
   }
+
   useEffect( () => {
-    get();
+
+    if(pageNumber===0) return get(1)
     return () => {
       setVisible( false );
       setModalContent(character_skeleton)
     }
   }, [pageNumber])
   
-  
-  
-
   return (
+
     <div className={"app-container"}>
       <Header/>
       <main className="content-container px-2 ">
@@ -46,7 +47,7 @@ const Home: NextPage = () => {
 
         <div className="d-flex flex-row flex-wrap content-area justify-content-center align-items-center">
         { characters.results.length === 0 ? <Spinner animation="border" variant="primary" />: 
-           characters && characters.results?.map( ( character: Characters ) => { 
+           characters && (characters.results as Characters[])?.map( ( character : Characters ) => { 
             return (
               <Card key={ character?.id }
                 className="character-card"
@@ -57,14 +58,15 @@ const Home: NextPage = () => {
                 }}
               >
                 <Card.Body>
-                  
+                  {character?.image?
                     <Image
                     src={character?.image}
                     height={300}
                     width={ 300 }
+                    loading="lazy"
                     blurDataURL="/placeholder.jpeg"
                     alt={`${character?.image} image for HA`}                   
-                    />
+                    />:<Spinner animation="border" variant="primary" />}
                     
                   <div className="info-box d-flex mt-3 flex-column">
                     <h2>{ character?.name }</h2>
@@ -105,7 +107,8 @@ const Home: NextPage = () => {
         get={get}
       />
       <Footer />
-    </div>
+      </div>
+
   )
 }
 
