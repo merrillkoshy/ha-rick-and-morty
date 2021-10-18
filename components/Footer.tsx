@@ -3,13 +3,17 @@ import React from "react";
 
 const Footer = () => {
 	return (
-		<footer className={"footer flex-column mt-2"}>
+		<footer
+			className={
+				"footer d-flex justify-content-center align-items-center flex-column mt-2"
+			}
+		>
 			<a
-				href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+				href="https://merrillkoshy.github.io/"
 				target="_blank"
 				rel="noopener noreferrer"
 			>
-				Powered by{" "}
+				Authored by Merrill Koshy Thomas with{" "}
 				<span className={"logo"}>
 					<Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
 				</span>

@@ -151,7 +151,7 @@ const PaginationComponent = ({
 		</>
 	);
 	return (
-		<Pagination size="sm" className="flex-wrap py-3 mb-5">
+		<Pagination size="sm" className="flex-wrap py-3 mb-2">
 			{items.length ? items : <Spinner animation="border" variant="primary" />}
 		</Pagination>
 	);

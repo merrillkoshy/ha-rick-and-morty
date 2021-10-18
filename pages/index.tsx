@@ -42,10 +42,9 @@ const Home: NextPage = () => {
 
     <div className={"app-container"}>
       <Header/>
-      <main className="content-container px-2 ">
+      <main className="content-container">
         <MastHead/>
-
-        <div className="d-flex flex-row flex-wrap content-area justify-content-center align-items-center">
+        <div className="d-flex pt-5 pb-3 flex-row flex-wrap content-area justify-content-center align-items-baseline">
         { characters.results.length === 0 ? <Spinner animation="border" variant="primary" />: 
            characters && (characters.results as Characters[])?.map( ( character : Characters ) => { 
             return (
@@ -96,8 +95,6 @@ const Home: NextPage = () => {
           modalContent={ modalContent }
           handleClose={handleClose}
         />
-      </main>
-
       <PaginationComponent
         count={ characters.info?.count }
         pages={characters.info?.pages}
@@ -107,6 +104,8 @@ const Home: NextPage = () => {
         get={get}
       />
       <Footer />
+      </main>
+
       </div>
 
   )
