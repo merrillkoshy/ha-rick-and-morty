@@ -47,7 +47,7 @@
 	}
 	.episode-list {
 		max-height: 10vh;
-		max-width: 17vw;
+		max-width: 25vw;
 		overflow: scroll;
 		@include media-breakpoint-down(sm) {
 			max-width: 90vw;

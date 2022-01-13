@@ -1,79 +1,79 @@
-import { Button, Modal, Spinner } from "react-bootstrap";
-import { Characters, Episode, Location } from "../lib/dataTypes";
-import Image from "next/image";
-import moment from "moment";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import EpisodeModal from "./EpisodeModal";
-import getters from "../lib/getData";
-import { episode_skeleton, location_skeleton } from "../lib/data-skeleton";
-import LocationModal from "./LocationModal";
-import { toast } from "react-toastify";
+import { Button, Modal, Spinner } from "react-bootstrap"
+import { Characters, Episode, Location } from "../lib/dataTypes"
+import Image from "next/image"
+import moment from "moment"
+import Link from "next/link"
+import { useEffect, useState } from "react"
+import EpisodeModal from "./EpisodeModal"
+import getters from "../lib/getData"
+import { episode_skeleton, location_skeleton } from "../lib/data-skeleton"
+import LocationModal from "./LocationModal"
+import { toast } from "react-toastify"
 interface Props {
-	visible: boolean;
-	modalContent: Characters;
-	handleClose: () => void;
+	visible: boolean
+	modalContent: Characters
+	handleClose: () => void
 }
 const ContentModal = (props: Props) => {
-	const { visible, modalContent, handleClose } = props;
-	const [show, setShow] = useState(false);
-	const [showLocationModal, setShowLocationModal] = useState(false);
-	const [episode, setEpisode] = useState<Episode>(episode_skeleton);
-	const [location, setLocation] = useState<Location>(location_skeleton);
-	const [episodeNumber, setEpisodeNumber] = useState<number>(0);
+	const { visible, modalContent, handleClose } = props
+	const [show, setShow] = useState(false)
+	const [showLocationModal, setShowLocationModal] = useState(false)
+	const [episode, setEpisode] = useState<Episode>(episode_skeleton)
+	const [location, setLocation] = useState<Location>(location_skeleton)
+	const [episodeNumber, setEpisodeNumber] = useState<number>(0)
 
 	const handleOpen_episode_modal = () => {
-		setShow(true);
-	};
+		setShow(true)
+	}
 	const handleClose_episode_modal = () => {
-		setShow(false);
-	};
+		setShow(false)
+	}
 	const handleOpen_location_modal = () => {
-		setShowLocationModal(true);
-	};
+		setShowLocationModal(true)
+	}
 	const handleClose_location_modal = () => {
-		setShowLocationModal(false);
-	};
+		setShowLocationModal(false)
+	}
 	const getLocationDetails = (location: string) => {
 		getters
 			.getLocation(location)
 			.then((response) => {
-				setLocation(response);
-				handleOpen_location_modal();
+				setLocation(response)
+				handleOpen_location_modal()
 			})
 			.catch((e) => {
 				toast(`Error: ${e.message}`, {
 					position: "bottom-center",
 					type: "error",
-				});
-			});
-	};
+				})
+			})
+	}
 
 	const fetchEpisode = (number: number) => {
 		getters
 			.getEpisode(number)
 			.then((response) => {
-				setEpisode(response);
-				handleOpen_episode_modal();
+				setEpisode(response)
+				handleOpen_episode_modal()
 			})
 			.catch((e) => {
 				toast(`Error: ${e.message}`, {
 					position: "bottom-center",
 					type: "error",
-				});
-			});
-	};
+				})
+			})
+	}
 	const episode_number_filtered_from_text = (text: string) => {
-		return Number(text.split("https://rickandmortyapi.com/api/episode/")[1]);
-	};
+		return Number(text.split("https://rickandmortyapi.com/api/episode/")[1])
+	}
 	useEffect(() => {
 		return () => {
-			setEpisode(episode_skeleton);
-			setLocation(location_skeleton);
-			setEpisodeNumber(0);
-			handleClose_episode_modal();
-		};
-	}, [episodeNumber]);
+			setEpisode(episode_skeleton)
+			setLocation(location_skeleton)
+			setEpisodeNumber(0)
+			handleClose_episode_modal()
+		}
+	}, [episodeNumber])
 
 	return (
 		<Modal show={visible} size="lg" onHide={handleClose}>
@@ -117,7 +117,7 @@ const ContentModal = (props: Props) => {
 									<div className="d-flex align-items-baseline">
 										<Button
 											onClick={() => {
-												getLocationDetails(modalContent.location?.name);
+												getLocationDetails(modalContent.location?.name)
 											}}
 											variant="secondary"
 										>
@@ -156,12 +156,12 @@ const ContentModal = (props: Props) => {
 														variant="outline-primary"
 														className="m-2"
 														onClick={(e) => {
-															e.preventDefault();
+															e.preventDefault()
 
 															const number = episode_number_filtered_from_text(
 																ep
-															);
-															fetchEpisode(number);
+															)
+															fetchEpisode(number)
 														}}
 													>
 														{ep.replace(
@@ -169,7 +169,7 @@ const ContentModal = (props: Props) => {
 															"Ep ID #"
 														)}
 													</Button>
-												);
+												)
 											})}
 									</div>
 								</div>
@@ -177,14 +177,14 @@ const ContentModal = (props: Props) => {
 						</div>
 					</Modal.Body>
 					<Modal.Footer>
-						<Link href={modalContent.url}>
-							<a>Go to link</a>
-						</Link>
+						{/* <Link href={modalContent.url}>
+							<a>API Response</a>
+						</Link> */}
 						<Button
 							variant="danger"
 							onClick={(e) => {
-								e.preventDefault();
-								handleClose();
+								e.preventDefault()
+								handleClose()
 							}}
 						>
 							Close
@@ -206,6 +206,6 @@ const ContentModal = (props: Props) => {
 				<Spinner animation="border" variant="primary" />
 			)}
 		</Modal>
-	);
-};
-export default ContentModal;
+	)
+}
+export default ContentModal

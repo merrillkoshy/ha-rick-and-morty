@@ -1,24 +1,24 @@
-import React from "react";
-import { Button, Modal, Spinner } from "react-bootstrap";
-import { Episode } from "../lib/dataTypes";
-import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
-import Link from "next/link";
-import moment from "moment";
+import React from "react"
+import { Button, Modal, Spinner } from "react-bootstrap"
+import { Episode } from "../lib/dataTypes"
+import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table"
+import Link from "next/link"
+import moment from "moment"
 
 interface Props {
-	show: boolean;
-	episodeContent: Episode;
-	handleClose: () => void;
+	show: boolean
+	episodeContent: Episode
+	handleClose: () => void
 }
 const EpisodeModal = (props: Props) => {
-	const { show, episodeContent, handleClose } = props;
+	const { show, episodeContent, handleClose } = props
 
 	const character_id_filtered_from_text = (text: string) => {
 		return text.replace(
 			"https://rickandmortyapi.com/api/character/",
 			"Character "
-		);
-	};
+		)
+	}
 	return (
 		<Modal show={show} size="lg" className="episode-modal" onHide={handleClose}>
 			{episodeContent.name ? (
@@ -46,22 +46,22 @@ const EpisodeModal = (props: Props) => {
 							</Thead>
 							<Tbody>
 								<Tr>
-									<Td>{episodeContent.name}</Td>
-									<Td>{episodeContent.air_date}</Td>
-									<Td>{episodeContent.episode}</Td>
-									<Td>
-										<div className="episode-list d-flex flex-wrap align-items-center justify-content-center">
+									<Td className="text-center">{episodeContent.name}</Td>
+									<Td className="text-center">{episodeContent.air_date}</Td>
+									<Td className="text-center">{episodeContent.episode}</Td>
+									<Td className="d-flex justify-content-center align-items-center text-center">
+										<div className="episode-list d-flex flex-wrap align-items-center justify-content-center w-100">
 											{episodeContent.characters &&
 												episodeContent.characters.map((character: string) => {
 													return (
 														<Button
 															key={episodeContent.id + character}
 															variant="outline-primary"
-															className="m-2"
+															className="m-2 text-center"
 														>
 															{character_id_filtered_from_text(character)}
 														</Button>
-													);
+													)
 												})}
 										</div>
 									</Td>
@@ -70,14 +70,14 @@ const EpisodeModal = (props: Props) => {
 						</Table>
 					</Modal.Body>
 					<Modal.Footer>
-						<Link href={episodeContent.url}>
+						{/* <Link href={episodeContent.url}>
 							<a>Go to link</a>
-						</Link>
+						</Link> */}
 						<Button
 							variant="danger"
 							onClick={(e) => {
-								e.preventDefault();
-								handleClose();
+								e.preventDefault()
+								handleClose()
 							}}
 						>
 							Close
@@ -88,6 +88,6 @@ const EpisodeModal = (props: Props) => {
 				<Spinner animation="border" variant="primary" />
 			)}
 		</Modal>
-	);
-};
-export default EpisodeModal;
+	)
+}
+export default EpisodeModal

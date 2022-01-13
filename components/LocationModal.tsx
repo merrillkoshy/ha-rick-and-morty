@@ -1,17 +1,17 @@
-import React from "react";
-import { Button, Modal, Spinner } from "react-bootstrap";
-import { Episode, Location } from "../lib/dataTypes";
-import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
-import Link from "next/link";
-import moment from "moment";
+import React from "react"
+import { Button, Modal, Spinner } from "react-bootstrap"
+import { Episode, Location } from "../lib/dataTypes"
+import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table"
+import Link from "next/link"
+import moment from "moment"
 
 interface Props {
-	show: boolean;
-	locationContent: Location;
-	handleClose: () => void;
+	show: boolean
+	locationContent: Location
+	handleClose: () => void
 }
 const LocationModal = (props: Props) => {
-	const { show, locationContent, handleClose } = props;
+	const { show, locationContent, handleClose } = props
 
 	return (
 		<Modal
@@ -45,23 +45,25 @@ const LocationModal = (props: Props) => {
 							</Thead>
 							<Tbody>
 								<Tr>
-									<Td>{locationContent.name}</Td>
-									<Td>{locationContent.type}</Td>
-									<Td>{locationContent.dimension}</Td>
-									<Td>{locationContent.residents.length}</Td>
+									<Td className="text-center">{locationContent.name}</Td>
+									<Td className="text-center">{locationContent.type}</Td>
+									<Td className="text-center">{locationContent.dimension}</Td>
+									<Td className="text-center">
+										{locationContent.residents.length}
+									</Td>
 								</Tr>
 							</Tbody>
 						</Table>
 					</Modal.Body>
 					<Modal.Footer>
-						<Link href={locationContent.url}>
+						{/* <Link href={locationContent.url}>
 							<a>Go to link</a>
-						</Link>
+						</Link> */}
 						<Button
 							variant="danger"
 							onClick={(e) => {
-								e.preventDefault();
-								handleClose();
+								e.preventDefault()
+								handleClose()
 							}}
 						>
 							Close
@@ -72,6 +74,6 @@ const LocationModal = (props: Props) => {
 				<Spinner animation="border" variant="primary" />
 			)}
 		</Modal>
-	);
-};
-export default LocationModal;
+	)
+}
+export default LocationModal
