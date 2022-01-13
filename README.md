@@ -14,7 +14,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Play (with) the App
 
-[CodeSandBox Link](https://codesandbox.io/s/rick-and-morty-ha-r3hjr) - See whats under the hood!
+[CodeSandBox Link](https://codesandbox.io/s/rick-and-morty-ha-42jzp) - See whats under the hood!
 
 ## Why NextJS?
 
